@@ -7,7 +7,9 @@
     "url": "https://github.com/BranShep/cinderboard.git"
   },
   "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "postinstall": "webapack -p",
+    "start": "node server.js",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch"
   },
@@ -38,9 +40,15 @@
     "axios": "^0.15.3",
     "babel-cli": "^6.24.0",
     "babel-preset-stage-1": "^6.1.18",
+    "body-parser": "^1.17.1",
+    "cors": "^2.8.3",
     "cuppa-datepicker": "^1.0.1",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.2",
+    "express-firebase-middleware": "^1.0.0",
     "file-system": "^2.2.2",
     "firebase": "^3.7.3",
+    "firebase-admin": "^4.2.1",
     "halogen": "^0.2.0",
     "input-moment": "^0.3.2",
     "json2xls": "^0.1.2",
