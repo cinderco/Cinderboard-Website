@@ -1,11 +1,10 @@
 {
-  "name": "redux-simple-starter",
+  "name": "cinderboard",
   "version": "1.0.0",
-  "description": "Simple starter package for Redux with React and Babel support",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/StephenGrider/ReduxSimpleStarter.git"
+    "url": "https://github.com/BranShep/cinderboard.git"
   },
   "scripts": {
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
@@ -79,10 +78,7 @@
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.2.0"
   },
-  "bugs": {
-    "url": "https://github.com/StephenGrider/ReduxSimpleStarter/issues"
-  },
-  "homepage": "https://github.com/StephenGrider/ReduxSimpleStarter#readme",
+  "homepage": "https://github.com/BranShep/cinderboard.git",
   "directories": {
     "test": "test"
   }
