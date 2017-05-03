@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2017 by original authors @ fontello.com</metadata>
+<defs>
+<font id="fontello" horiz-adv-x="1000" >
+<font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="delivery-cart" unicode="&#xe800;" d="M997 282c-7 15-25 22-40 15l-359-168c-24 31-61 49-101 49-9 0-18-1-26-2l-260 557-173 47c-16 4-33-6-37-22-4-16 5-32 21-36l147-40 248-532c-46-36-63-100-37-156 21-45 67-75 117-75 19 0 37 5 55 13 31 14 55 40 66 73 9 23 10 47 6 70l359 167c15 7 21 25 14 40z m-435-257c-6-17-19-31-36-39-9-4-19-7-29-7-27 0-52 16-63 41-16 34-1 76 34 92 9 4 19 6 29 6 27 0 51-15 63-40 8-17 8-35 2-53z m-30 176c3-7 9-13 16-15 4-2 7-2 11-2 4 0 8 1 12 3l346 161c7 3 12 9 15 17 3 7 2 15-1 23l-147 315c-7 15-25 21-40 14l-345-161c-7-3-13-9-15-17-3-7-3-16 1-23l147-315z m211 449l121-261-291-135-121 260 291 136z" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>
