@@ -6,7 +6,6 @@ import Loader from 'halogen/PulseLoader';
 import { signOutUser, outgoingFetch, incomingFetch } from '../../actions';
 import Outgoing from './Outgoing';
 import Incoming from './Incoming';
-import NavBar from '../common/NavBar';
 import NewOrder from './NewOrder';
 import NewIncomingOrder from './NewIncomingOrder';
 
@@ -16,17 +15,8 @@ class Orders extends Component {
   }
 
   componentWillMount() {
-    firebase.auth().onAuthStateChanged(user => {
-        this.setState({ user: user.displayName });
-        console.log(user);
-    });
-
     this.props.outgoingFetch();
     this.props.incomingFetch();
-  }
-
-  onButtonClick() {
-    this.props.signOutUser();
   }
 
   close() {
@@ -135,18 +125,14 @@ class Orders extends Component {
     console.log('render Orders');
       if (this.props.loading) {
         return (
-          <div>
-            <NavBar logOut={this.onButtonClick.bind(this)} />
-            <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '90vh' }}>
-              <Loader color="#DB2728" size="16px" margin="4px" />
-              <h3>Loading orders</h3>
-            </div>
+          <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '90vh' }}>
+            <Loader color="#DB2728" size="16px" margin="4px" />
+            <h3>Loading orders</h3>
           </div>
         );
       }
       return (
-        <div style={{ textAlign: 'center' }}>
-          <NavBar logOut={this.onButtonClick.bind(this)} name={this.state.user} />
+        <div style={{ paddingLeft: '15px', paddingRight: '15px' }}>
             <div
               className="page-header"
               style={{

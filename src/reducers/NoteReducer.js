@@ -8,6 +8,7 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
+  console.log('note reducer');
   switch (action.type) {
     case NOTES_FETCH_SUCCESS:
       return { ...state, conversations_list: action.payload, loading: false };

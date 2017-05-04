@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 class DisplayOrder extends Component {
   render() {
     return (
-        <div id={this.props.modalName} className="modal fade" role="dialog" style={{ height: '2000px' }}>
+        <div id={this.props.modalName} className="modal fade" role="dialog">
           <div className="modal-dialog" role="document">
-            <div className="modal-content">
+            <div className="modal-content" style={{ height: '80vh' }}>
               <div className="modal-header">
                 <button
                   type="button"

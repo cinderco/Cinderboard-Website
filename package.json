@@ -7,9 +7,9 @@
     "url": "https://github.com/BranShep/cinderboard.git"
   },
   "scripts": {
-    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "postinstall": "webapack -p",
-    "start": "node server.js",
+    "dev": "node server.js",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch"
   },
@@ -44,6 +44,7 @@
     "cors": "^2.8.3",
     "cuppa-datepicker": "^1.0.1",
     "dotenv": "^4.0.0",
+    "exponent-server-sdk": "^2.3.1",
     "express": "^4.15.2",
     "express-firebase-middleware": "^1.0.0",
     "file-system": "^2.2.2",

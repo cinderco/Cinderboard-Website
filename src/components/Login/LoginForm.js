@@ -29,7 +29,7 @@ class LoginForm extends Component {
     firebase.auth().onAuthStateChanged(user => {
         this.setState({ user });
         if (user) {
-          browserHistory.push('/orders');
+          browserHistory.push('/home');
         }
     });
   }

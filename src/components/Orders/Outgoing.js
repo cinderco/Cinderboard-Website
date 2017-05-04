@@ -141,11 +141,9 @@ class Outgoing extends Component {
   render() {
     console.log('render Orders');
     return (
-      <div>
         <ul className="list-group">
           {this.renderOrders()}
         </ul>
-      </div>
     );
   }
 }

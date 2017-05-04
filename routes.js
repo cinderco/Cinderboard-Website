@@ -1,3 +1,5 @@
+const Expo = require('exponent-server-sdk');
+
 const express = require('express');
 
 const router = express.Router();
@@ -44,6 +46,25 @@ router.post('/newUser', (req, res) => {
 
     res.json({
         message: 'hey bro!!'
+    });
+});
+
+router.post('/pushNotification', (req, res) => {
+  // Create a new Expo SDK client
+    const expo = new Expo();
+
+  // To send push notifications -- note that there is a limit on the number of
+  // notifications you can send at once, use expo.chunkPushNotifications()
+    expo.sendPushNotificationsAsync([{
+        // The push token for the app user to whom you want to send the notification
+        to: 'ExponentPushToken[teRDTRIjpOECCfB3jC5YRP]',
+        sound: 'default',
+        body: 'This is a test notification',
+        data: { withSome: 'data' }
+      }]);
+
+    res.json({
+      message: 'nice notifcation bro!'
     });
 });
 
