@@ -50,6 +50,11 @@ router.post('/newUser', (req, res) => {
 });
 
 router.post('/pushNotification', (req, res) => {
+
+  // To check if something is a push token
+    const isPushToken = Expo.isExponentPushToken(req.body.token);
+    console.log(isPushToken);
+
   // Create a new Expo SDK client
     const expo = new Expo();
 
@@ -57,10 +62,10 @@ router.post('/pushNotification', (req, res) => {
   // notifications you can send at once, use expo.chunkPushNotifications()
     expo.sendPushNotificationsAsync([{
         // The push token for the app user to whom you want to send the notification
-        to: 'ExponentPushToken[teRDTRIjpOECCfB3jC5YRP]',
+        to: req.body.token,
         sound: 'default',
-        body: 'This is a test notification',
-        data: { withSome: 'data' }
+        body: req.body.message,
+        data: { text: req.body.message, route: req.body.route, content: req.body.uid }
       }]);
 
     res.json({
