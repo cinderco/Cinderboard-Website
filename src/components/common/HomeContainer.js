@@ -24,7 +24,7 @@ class HomeContainer extends Component {
       <div>
         <NavBar logOut={this.onButtonClick.bind(this)} name={this.state.user} />
         <div className="mainContainer">
-          <div className="container" style={{ backgroundColor: 'white', height: '100vh', padding: 0 }}>
+          <div className="container">
             {this.props.children}
           </div>
         </div>

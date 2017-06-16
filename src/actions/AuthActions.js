@@ -1,6 +1,5 @@
 import firebase from 'firebase';
-import React, { PropTypes } from 'react';
-import { browserHistory } from 'react-router';
+import axios from 'axios';
 import {
   OUTGOING_CREATE,
   EMAIL_CHANGED,
@@ -41,42 +40,75 @@ export const nameChanged = (text) => {
   };
 };
 
-export const loginUser = ({ email, password }) => {
+export const loginUser = ({ email, password, setError }) => {
   return (dispatch) => {
     dispatch({ type: LOGIN_USER });
 
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then((user) => {
-        console.log(user);
         loginUserSuccess(dispatch, user);
-        browserHistory.push('/orders');
+        setError('');
       })
       .catch((error) => {
-        console.log(error);
-        loginUserFail(dispatch);
+          loginUserFail(dispatch);
+          setError('Incorrect email or password!');
       });
   };
 };
 
-export const signupUser = ({ email, password, name, admin }) => {
+export const addUser = ({ email, password, name, admin, setModalVisible, setError }) => {
+  const config = {
+    headers: {'Content-Type': 'application/json'}
+  }
   return (dispatch) => {
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then((user) => updateUser(dispatch, user, name, admin))
-      .catch(() => loginUserFail(dispatch));
+    axios({
+      method: 'post',
+      url: 'https://cinderboard.com/newUser',
+      data: {
+        email: `${email}`,
+        password: `${password}`,
+        name: `${name}`
+      }
+    }).then((response) => {
+      if (response.data.error) {
+        setError(response.data.error);
+      } else {
+        firebase.database().ref(`/users/${response.data.uid}`)
+          .set({ email, name, isAdmin: admin })
+            .then(() => setModalVisible(false));
+      }
+    });
   };
 };
 
-const updateUser = (dispatch, user, name, admin) => {
-  return (
-    firebase.database().ref(`/users/${user.uid}`)
-      .set({
-        isAdmin: admin, name
-      })
-      .then(() => {
-        user.updateProfile({ displayName: name });
-        dispatch({ type: OUTGOING_CREATE });
-      })
-  );
+export const signupUser = ({ email, password }) => {
+  return (dispatch) => {
+    firebase.auth().createUserWithEmailAndPassword(email, password);
+  }
+};
+
+export const updateUser = ({ email, password, name, admin, uid, setModalVisible, setError }) => {
+  console.log('user uid:', uid);
+  return (dispatch) => {
+    axios({
+      method: 'post',
+      url: 'https://cinderboard.com/updateUser',
+      data: {
+        uid: `${uid}`,
+        email: `${email}`,
+        password: `${password}`,
+        name: `${name}`
+      }
+    }).then((response) => {
+      if (response.data.error) {
+        setError(response.data.error);
+      } else {
+        firebase.database().ref(`/users/${response.data.uid}`)
+          .update({ email, name, isAdmin: admin })
+            .then(() => setModalVisible(false));
+      }
+    });
+  };
 };
 
 const loginUserFail = (dispatch) => {
@@ -101,7 +133,7 @@ export const signOutUser = () => {
   return () => {
     firebase.auth().signOut()
       .then(() => {
-        browserHistory.push('/');
+
       })
       .catch((error) => {
         console.log(error);
@@ -109,6 +141,18 @@ export const signOutUser = () => {
   };
 };
 
-export const getUser = () => {
-
+export const userDelete = ({ uid }) => {
+  return (dispatch) => {
+    axios({
+      method: 'post',
+      url: 'https://cinderboard.com/deleteUser',
+      data: {
+        uid: `${uid}`
+      }
+    }).then((response) => {
+      console.log('attempting to delete user');
+        firebase.database().ref(`/users/${uid}`)
+          .remove();
+      });
+  };
 }

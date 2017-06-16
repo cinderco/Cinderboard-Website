@@ -158,8 +158,9 @@ class NewOrder extends Component {
                       label="Type"
                     >
                       <option />
-                      <option value="Pickup">Pickup</option>
+                      <option value="Freight">Freight</option>
                       <option value="Delivery">Delivery</option>
+                      <option value="Will Call">Will Call</option>
                     </Field>
 
                     <Field

@@ -39,13 +39,33 @@ router.post('/newUser', (req, res) => {
     .then((userRecord) => {
       // See the UserRecord reference doc for the contents of userRecord.
       console.log('Successfully created new user:', userRecord.uid);
+      res.json({
+          uid: userRecord.uid
+      });
     })
     .catch((error) => {
       console.log('Error creating new user:', error);
     });
+});
 
-    res.json({
-        message: 'hey bro!!'
+router.post('/updateUser', (req, res) => {
+  admin.auth().updateUser(req.body.uid, {
+    email: req.body.email,
+    emailVerified: false,
+    password: req.body.password,
+    displayName: req.body.name,
+    photoURL: 'http://www.example.com/12345678/photo.png',
+    disabled: false
+  })
+    .then((userRecord) => {
+      // See the UserRecord reference doc for the contents of userRecord.
+      console.log('Successfully update user:', userRecord.uid);
+      res.json({
+          uid: userRecord.uid
+      });
+    })
+    .catch((error) => {
+      console.log('Error updating user:', error);
     });
 });
 

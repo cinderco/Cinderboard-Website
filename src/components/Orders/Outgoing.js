@@ -78,7 +78,7 @@ class Outgoing extends Component {
                 <span style={styles.listItemCenter}>{order.type}</span>
                 {this.renderDate(order.date)}
             </li>
-            <DisplayOrder order={order} modalName={`modal${index}`} />
+            <DisplayOrder order={order} modalName={`modal${index}`} orderType={'outgoing'} />
           </div>
         );
       } else if (order.status === 'ready') {
@@ -96,7 +96,7 @@ class Outgoing extends Component {
                 <span style={styles.listItemCenter}>{order.type}</span>
                 {this.renderDate(order.date)}
             </li>
-            <DisplayOrder order={order} modalName={`modal${index}`} />
+            <DisplayOrder order={order} modalName={`modal${index}`} orderType={'outgoing'}/>
           </div>
         );
       } else if (order.status === 'processing') {
@@ -114,7 +114,7 @@ class Outgoing extends Component {
                 <span style={styles.listItemCenter}>{order.type}</span>
                 {this.renderDate(order.date)}
             </li>
-            <DisplayOrder order={order} modalName={`modal${index}`} />
+            <DisplayOrder order={order} modalName={`modal${index}`} orderType={'outgoing'}/>
           </div>
         );
       }
@@ -132,7 +132,7 @@ class Outgoing extends Component {
               <span style={styles.listItemCenter}>{order.type}</span>
               {this.renderDate(order.date)}
           </li>
-          <DisplayOrder order={order} modalName={`modal${index}`} />
+          <DisplayOrder order={order} modalName={`modal${index}`} orderType={'outgoing'}/>
         </div>
       );
     });

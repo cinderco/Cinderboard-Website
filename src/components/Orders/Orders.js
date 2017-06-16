@@ -9,6 +9,7 @@ import Incoming from './Incoming';
 import NewOrder from './NewOrder';
 import NewIncomingOrder from './NewIncomingOrder';
 
+
 class Orders extends Component {
   state = {
     showModal: false,
@@ -193,6 +194,7 @@ const mapStateToProps = state => {
     return new Date(a.date).getTime() - new Date(b.date).getTime();
   });
 
+  console.log(state.orders.outgoing_list);
   return { loading, ordersOutgoing, ordersIncoming };
 };
 

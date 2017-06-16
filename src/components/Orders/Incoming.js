@@ -51,7 +51,7 @@ class Incoming extends Component {
               <span style={styles.listItemCenter}>{order.type}</span>
               {this.renderDate(order.date)}
           </li>
-          <DisplayOrder order={order} modalName={`modal${index}incoming`} />
+          <DisplayOrder order={order} modalName={`modal${index}incoming`} orderType={'incoming'} />
         </div>
       );
     });

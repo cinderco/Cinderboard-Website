@@ -11,6 +11,7 @@ import ClientFormReducer from './ClientFormReducer';
 import ClientReducer from './ClientReducer';
 import SideMenuReducer from './SideMenuReducer';
 import EmployeeReducer from './EmployeeReducer';
+import LogReducer from './LogReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -23,6 +24,7 @@ export default combineReducers({
   noteForm: NoteFormReducer,
   messages: NoteReducer,
   sideMenu: SideMenuReducer,
+  orderLog: LogReducer,
   admin: EmployeeReducer,
   form: formReducer
 });
