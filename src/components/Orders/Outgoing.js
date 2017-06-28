@@ -1,58 +1,62 @@
 import moment from 'moment';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PackageVariantClosedIcon from 'react-mdi/icons/package-variant-closed';
+import Walk from 'react-mdi/icons/walk';
+import TruckFast from 'react-mdi/icons/truck-delivery';
 import { outgoingFetch, orderDelete } from '../../actions';
 import DisplayOrder from './DisplayOrder';
 
 class Outgoing extends Component {
-  componentWillMount() {
-    console.log('in outgoing', this.props);
-  }
 
   renderDate(dateParam) {
-    const date = new Date();
-    const shortDate = date.toLocaleDateString();
-    const orderDate = new Date(dateParam);
-    const shortOrderDate = orderDate.toLocaleDateString();
-    const start = moment().startOf('week').format('x');
-    const end = moment().endOf('week').format('x');
-    const today = moment().format('x');
-    const dateTwo = moment(dateParam).format('x');
-    const dateDay = moment(dateParam).format('dddd');
-
-
-    if (shortOrderDate === shortDate) {
+    if (dateParam === 'Unknown') {
       return (
-        <span style={styles.listItemRight}>Today</span>
+        <span style={styles.listItemRight}>?</span>
       );
-    } else if (dateTwo < today) {
+    } else {
+      const date = new Date();
+      const shortDate = date.toLocaleDateString();
+      const orderDate = new Date(dateParam);
+      const shortOrderDate = orderDate.toLocaleDateString();
+      const start = moment().startOf('week').format('x');
+      const end = moment().endOf('week').format('x');
+      const today = moment().format('x');
+      const dateTwo = moment(dateParam).format('x');
+      const dateDay = moment(dateParam).format('dddd');
+
+      if (shortOrderDate === shortDate) {
+        return (
+          <span style={styles.listItemRight}>Today</span>
+        );
+      } else if (dateTwo < today) {
+        return (
+          <span style={styles.listItemTextLate}>{shortOrderDate}</span>
+        );
+      } else if (dateTwo >= start && dateTwo <= end) {
+        return (
+          <span style={styles.listItemRight}>{dateDay}</span>
+        );
+      }
       return (
-        <span style={styles.listItemTextLate}>{shortOrderDate}</span>
-      );
-    } else if (dateTwo >= start && dateTwo <= end) {
-      return (
-        <span style={styles.listItemRight}>{dateDay}</span>
+        <span style={styles.listItemRight}>{shortOrderDate}</span>
       );
     }
-    return (
-      <span style={styles.listItemRight}>{shortOrderDate}</span>
-    );
   }
 
   renderIcon(type) {
-    console.log(type);
     switch (type) {
       case 'Will Call':
         return (
-          <span style={styles.listItemIcon}><i className="fa fa-user" aria-hidden="true" /></span>
+          <span style={styles.listItemIcon}><Walk size={26} className="myClassName" /></span>
         );
       case 'Delivery':
         return (
-          <span style={styles.listItemIcon}><i className="fa fa-truck" aria-hidden="true" /></span>
+          <span style={styles.listItemIcon}><TruckFast size={26} className="myClassName" /></span>
         );
       case 'Freight':
         return (
-          <span style={styles.listItemIcon}><img src='src/components/orders/delivery-cart.svg' height='20px' width='20px' /></span>
+          <span style={styles.listItemIcon}><PackageVariantClosedIcon size={26} className="myClassName" /></span>
         );
       default:
         return (
@@ -139,7 +143,6 @@ class Outgoing extends Component {
   }
 
   render() {
-    console.log('render Orders');
     return (
         <ul className="list-group">
           {this.renderOrders()}

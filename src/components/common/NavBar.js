@@ -13,24 +13,10 @@ const NavBar = (props) => {
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
           </button>
-          <a className="navbar-brand" style={{ color: 'red'}}>Cinder Co.</a>
+          <Link to="home"><img src="https://s3-us-west-1.amazonaws.com/cinderco/cinder_icon_vector.png" className="navbar-brand" style={{ height: 50, padding: 10, marginLeft: 40 }} /></Link>
         </div>
 
         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul className="nav navbar-nav">
-            <li><Link to="home">Home</Link></li>
-            <li><Link to="home">Clients</Link></li>
-            <li className="dropdown">
-              <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Orders <span className="caret"></span></a>
-              <ul className="dropdown-menu">
-                <li><a href="#">All</a></li>
-                <li><a href="#">Outgoing</a></li>
-                <li><a href="#">Incoming</a></li>
-                <li><a href="#">Archived</a></li>
-              </ul>
-            </li>
-            <li><Link to="/messages">Messages</Link></li>
-          </ul>
           <ul className="nav navbar-nav navbar-right">
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{props.name} <span className="caret"></span></a>

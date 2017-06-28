@@ -50,7 +50,6 @@ const renderSelectField = ({ input, label, meta: { touched, error }, children })
 );
 
 const validate = values => {
-  console.log('validate!!!');
   const errors = {};
   if (!values.companyName) {
     errors.companyName = '* Please enter a company name';
@@ -60,9 +59,6 @@ const validate = values => {
   }
   if (!values.orderType) {
     errors.orderType = '* Please choose order type';
-  }
-  if (!values.date) {
-    errors.date = '* Please pick an order date';
   }
   return errors;
 };
@@ -90,14 +86,24 @@ class NewOrder extends Component {
   }
 
   handleFormSubmit({ companyName, orderContent, orderType, date }) {
-    console.log(companyName, orderContent, orderType, date);
-      const newDate = new Date(date);
-      this.props.outgoingCreate({ companyName, type: orderContent, newDate, other: orderType });
-      $(function () {
-        $('#myModal').modal('toggle');
-      });
+    console.log(companyName, orderContent, orderType, 'DATE:', date);
+      if (date === undefined) {
+        const newDate = 'Unknown';
+        this.props.outgoingCreate({ companyName, type: orderContent, newDate, other: orderType });
+        $(function () {
+          $('#myModal').modal('toggle');
+        });
 
-      this.props.reset();
+        this.props.reset();
+      } else {
+        const newDate = new Date(date);
+        this.props.outgoingCreate({ companyName, type: orderContent, newDate, other: orderType });
+        $(function () {
+          $('#myModal').modal('toggle');
+        });
+
+        this.props.reset();
+      }
   }
 
   render() {

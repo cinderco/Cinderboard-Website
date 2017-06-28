@@ -50,7 +50,6 @@ const renderSelectField = ({ input, label, meta: { touched, error }, children })
 );
 
 const validate = values => {
-  console.log('validate!!!');
   const errors = {};
   if (!values.companyName) {
     errors.companyName = '* Please enter a company name';
@@ -60,9 +59,6 @@ const validate = values => {
   }
   if (!values.orderType) {
     errors.orderType = '* Please choose order type';
-  }
-  if (!values.date) {
-    errors.date = '* Please pick an order date';
   }
   return errors;
 };
@@ -91,6 +87,15 @@ class NewIncomingOrder extends Component {
 
   handleFormSubmit({ companyName, orderContent, date }) {
     console.log(companyName, orderContent, date);
+    if (date === undefined) {
+      const newDate = 'Unknown';
+      this.props.incomingCreate({ companyName, type: orderContent, newDate });
+      $(function () {
+        $('#incomingModal').modal('toggle');
+      });
+
+      this.props.reset();
+    } else {
       const newDate = new Date(date);
       this.props.incomingCreate({ companyName, type: orderContent, newDate });
       $(function () {
@@ -98,6 +103,7 @@ class NewIncomingOrder extends Component {
       });
 
       this.props.reset();
+    }
   }
 
   render() {

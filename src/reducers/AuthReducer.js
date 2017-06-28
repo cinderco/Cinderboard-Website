@@ -30,7 +30,6 @@ export default (state = INITIAL_STATE, action) => {
     case CONFIRM_PASSWORD_CHANGED:
       return { ...state, confirmPassword: action.payload };
     case LOGIN_USER_SUCCESS:
-      console.log('login user success');
       return {
         ...state,
         ...INITIAL_STATE,
@@ -39,7 +38,6 @@ export default (state = INITIAL_STATE, action) => {
         loading: true
       };
     case LOGIN_USER_FAIL:
-      console.log('login user FAIL!');
       return { ...state, loginMessage: 'Incorrect email or password', password: '', loading: false };
     case SIGNUP_USER_SUCCESS:
       return { ...state, user: action.payload };

@@ -11,9 +11,7 @@ export default (
   <Route path='/'>
     <IndexRoute component={LoginForm} />
     <Route path='/home' component={HomeContainer}>
-      <IndexRoute path='/orders' component={Orders} />
-      <Route path='/new_order' component={NewOrder} />
-      <Route path='/messages' component={Messages} />
+      <IndexRoute component={Orders} />
     </Route>
   </Route>
 );

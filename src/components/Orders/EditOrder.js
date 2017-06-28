@@ -9,7 +9,6 @@ import { orderUpdate, outgoingCreate, clearForm, outgoingSave, incomingSave } fr
 
 
 const validate = values => {
-  console.log('validate!!!');
   const errors = {};
   if (!values.companyName) {
     errors.companyName = '* Please enter a company name';
@@ -51,55 +50,192 @@ class EditOrder extends Component {
   }
 
   onPressSaveButton() {
-    const order = this.props.order;
-    const uid = order.uid;
-    const { companyName, date, type } = this.state;
-    console.log('date', this.state.date);
-    const orderContent = this.state.order;
-    const newDate = new Date(date);
-    const companyNameOld = order.companyName;
-    const typeOld = order.type;
-    const otherOld = order.other;
-    const status = order.status;
-    const { createDate, createdBy } = order;
+    console.log('STATE DATE: ', this.state.date);
 
-    const changedValues = _.differenceWith(
-      [{ companyName }, { type: orderContent }, { other: type }, { newDate }],
-      [{ companyName: companyNameOld }, { type: typeOld }, { other: otherOld }, { newDate: date }],
-       _.isEqual);
+    if (this.props.order.orderType === 'incoming') {
+      if (this.state.date === 'Unknown' || this.state.date === '') {
+        const order = this.props.order;
+        const uid = order.uid;
+        const { companyName, date, type } = this.state;
+        const orderContent = this.state.order;
+        const newDate = 'Unknown';
+        const companyNameOld = order.companyName;
+        const typeOld = order.type;
+        const status = order.status;
+        const { createDate, createdBy } = order;
 
-    const changedValuesTwo = () => {
-      const changedValuesArr = ['changed '];
-      const date1 = new Date(this.props.order.date).toLocaleDateString();
-      const date2 = new Date(newDate).toLocaleDateString();
+        const changedValues = _.differenceWith(
+          [{ companyName }, { type: orderContent }, { newDate }],
+          [{ companyName: companyNameOld }, { type: typeOld }, { newDate: date }],
+           _.isEqual);
 
-      for (let i = 0; i < changedValues.length; i++) {
-        if (Object.keys(changedValues[i])[0] === 'companyName') {
-            changedValuesArr.push(`company name from ${companyNameOld} to ${companyName}, `);
-        } else if (Object.keys(changedValues[i])[0] === 'type') {
-            changedValuesArr.push(`order from ${typeOld} to ${orderContent}, `);
-        } else if (Object.keys(changedValues[i])[0] === 'other') {
-            changedValuesArr.push(`order type from ${otherOld} to ${type}, `);
-        } else if (Object.keys(changedValues[i])[0] === 'newDate') {
-            changedValuesArr.push(`order ${otherOld} date from ${date1} to ${date2}`);
-        }
+        const changedValuesTwo = () => {
+          const changedValuesArr = ['changed '];
+          const date1 = new Date(this.props.order.date).toLocaleDateString();
+          const date2 = new Date(newDate).toLocaleDateString();
+
+          for (let i = 0; i < changedValues.length; i++) {
+            if (Object.keys(changedValues[i])[0] === 'companyName') {
+                changedValuesArr.push(`company name from ${companyNameOld} to ${companyName}, `);
+            } else if (Object.keys(changedValues[i])[0] === 'type') {
+                changedValuesArr.push(`order from ${typeOld} to ${orderContent}, `);
+            } else if (Object.keys(changedValues[i])[0] === 'newDate') {
+                changedValuesArr.push(`order date from ${date1} to ${date2}`);
+            }
+          }
+
+          return changedValuesArr;
+        };
+
+        const changed = changedValuesTwo();
+
+        this.props.incomingSave({
+          companyName, type: orderContent, newDate, status, uid, createDate, changed, createdBy
+        });
+
+
+          this.props.setEditOrder();
+      } else {
+        const order = this.props.order;
+        const uid = order.uid;
+        const { companyName, date, type } = this.state;
+        const orderContent = this.state.order;
+        const newDate = new Date(date);
+        const companyNameOld = order.companyName;
+        const typeOld = order.type;
+        const status = order.status;
+        const { createDate, createdBy } = order;
+
+        const changedValues = _.differenceWith(
+          [{ companyName }, { type: orderContent }, { newDate }],
+          [{ companyName: companyNameOld }, { type: typeOld }, { newDate: date }],
+           _.isEqual);
+
+        const changedValuesTwo = () => {
+          const changedValuesArr = ['changed '];
+          const date1 = new Date(this.props.order.date).toLocaleDateString();
+          const date2 = new Date(newDate).toLocaleDateString();
+
+          for (let i = 0; i < changedValues.length; i++) {
+            if (Object.keys(changedValues[i])[0] === 'companyName') {
+                changedValuesArr.push(`company name from ${companyNameOld} to ${companyName}, `);
+            } else if (Object.keys(changedValues[i])[0] === 'type') {
+                changedValuesArr.push(`order from ${typeOld} to ${orderContent}, `);
+            } else if (Object.keys(changedValues[i])[0] === 'newDate') {
+                changedValuesArr.push(`order date from ${date1} to ${date2}`);
+            }
+          }
+
+          return changedValuesArr;
+        };
+
+        const changed = changedValuesTwo();
+
+        this.props.incomingSave({
+          companyName, type: orderContent, newDate, status, uid, createDate, changed, createdBy
+        });
+
+
+          this.props.setEditOrder();
       }
+    } else {
+      if (this.state.date === 'Unknown' || this.state.date === '') {
+        console.log("UNKONW", this.state.date);
 
-      return changedValuesArr;
-    };
+        const order = this.props.order;
+        const uid = order.uid;
+        const { companyName, date, type } = this.state;
+        const orderContent = this.state.order;
+        const newDate = 'Unknown';
+        const companyNameOld = order.companyName;
+        const typeOld = order.type;
+        const otherOld = order.other;
+        const status = order.status;
+        const { createDate, createdBy } = order;
 
-    const changed = changedValuesTwo();
+        const changedValues = _.differenceWith(
+          [{ companyName }, { type: orderContent }, { other: type }, { newDate }],
+          [{ companyName: companyNameOld }, { type: typeOld }, { other: otherOld }, { newDate: date }],
+           _.isEqual);
 
-    this.props.outgoingSave({
-      companyName, type: orderContent, newDate, other: type, status, uid, createDate, changed, createdBy
-    });
+        const changedValuesTwo = () => {
+          const changedValuesArr = ['changed '];
+          const date1 = new Date(this.props.order.date).toLocaleDateString();
+          const date2 = new Date(newDate).toLocaleDateString();
+
+          for (let i = 0; i < changedValues.length; i++) {
+            if (Object.keys(changedValues[i])[0] === 'companyName') {
+                changedValuesArr.push(`company name from ${companyNameOld} to ${companyName}, `);
+            } else if (Object.keys(changedValues[i])[0] === 'type') {
+                changedValuesArr.push(`order from ${typeOld} to ${orderContent}, `);
+            } else if (Object.keys(changedValues[i])[0] === 'other') {
+                changedValuesArr.push(`order type from ${otherOld} to ${type}, `);
+            } else if (Object.keys(changedValues[i])[0] === 'newDate') {
+                changedValuesArr.push(`order ${otherOld} date from ${date1} to ${date2}`);
+            }
+          }
+
+          return changedValuesArr;
+        };
+
+        const changed = changedValuesTwo();
+
+        this.props.outgoingSave({
+          companyName, type: orderContent, newDate, other: type, status, uid, createDate, changed, createdBy
+        });
 
 
-      this.props.setEditOrder();
+          this.props.setEditOrder();
+      } else {
+        const order = this.props.order;
+        const uid = order.uid;
+        const { companyName, date, type } = this.state;
+        const orderContent = this.state.order;
+        const newDate = new Date(date);
+        const companyNameOld = order.companyName;
+        const typeOld = order.type;
+        const otherOld = order.other;
+        const status = order.status;
+        const { createDate, createdBy } = order;
+
+        const changedValues = _.differenceWith(
+          [{ companyName }, { type: orderContent }, { other: type }, { newDate }],
+          [{ companyName: companyNameOld }, { type: typeOld }, { other: otherOld }, { newDate: date }],
+           _.isEqual);
+
+        const changedValuesTwo = () => {
+          const changedValuesArr = ['changed '];
+          const date1 = new Date(this.props.order.date).toLocaleDateString();
+          const date2 = new Date(newDate).toLocaleDateString();
+
+          for (let i = 0; i < changedValues.length; i++) {
+            if (Object.keys(changedValues[i])[0] === 'companyName') {
+                changedValuesArr.push(`company name from ${companyNameOld} to ${companyName}, `);
+            } else if (Object.keys(changedValues[i])[0] === 'type') {
+                changedValuesArr.push(`order from ${typeOld} to ${orderContent}, `);
+            } else if (Object.keys(changedValues[i])[0] === 'other') {
+                changedValuesArr.push(`order type from ${otherOld} to ${type}, `);
+            } else if (Object.keys(changedValues[i])[0] === 'newDate') {
+                changedValuesArr.push(`order ${otherOld} date from ${date1} to ${date2}`);
+            }
+          }
+
+          return changedValuesArr;
+        };
+
+        const changed = changedValuesTwo();
+
+        this.props.outgoingSave({
+          companyName, type: orderContent, newDate, other: type, status, uid, createDate, changed, createdBy
+        });
+
+
+          this.props.setEditOrder();
+      }
+    }
   }
 
   changeInputValue(e, label) {
-    console.log(e.target.value);
     this.setState({ [label]: e.target.value });
   }
 
@@ -140,6 +276,9 @@ class EditOrder extends Component {
   }
 
   renderSelectField() {
+    if (this.props.order.orderType === 'incoming') {
+      return null;
+    }
     return (
       <div className="form-group">
         <label htmlFor="Type">Type</label>

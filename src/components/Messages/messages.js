@@ -11,7 +11,6 @@ class Messages extends Component {
   }
 
   componentDidMount() {
-    console.log('hello brandon!!!!');
     this.props.notesFetch();
   }
 
@@ -76,7 +75,6 @@ class Messages extends Component {
   }
 
   render() {
-    console.log('render Messages');
     return (
         <ul className="list-group">
           {this.renderMessages()}
@@ -159,8 +157,6 @@ const mapStateToProps = state => {
   const messageList = _.map(messages, (val, uid) => {
     return { ...val, uid };
   });
-
-  console.log('MESSAGES', state);
 
   return { loading, messageList };
 };

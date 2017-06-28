@@ -88,7 +88,6 @@ export const signupUser = ({ email, password }) => {
 };
 
 export const updateUser = ({ email, password, name, admin, uid, setModalVisible, setError }) => {
-  console.log('user uid:', uid);
   return (dispatch) => {
     axios({
       method: 'post',

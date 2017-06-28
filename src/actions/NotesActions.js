@@ -31,7 +31,6 @@ export const fetchAllUsers = () => {
   return (dispatch) => {
     firebase.database().ref(`/users`)
       .on('value', snapshot => {
-        console.log('USERS!!!!!!!', snapshot.val());
         dispatch({ type: USERS_FETCH_SUCCESS, payload: snapshot.val() });
       });
   };

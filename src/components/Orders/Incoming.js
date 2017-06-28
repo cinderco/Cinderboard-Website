@@ -6,34 +6,41 @@ import DisplayOrder from './DisplayOrder';
 
 
 class Incoming extends Component {
+
   renderDate(dateParam) {
-    const date = new Date();
-    const shortDate = date.toLocaleDateString();
-    const orderDate = new Date(dateParam);
-    const shortOrderDate = orderDate.toLocaleDateString();
-    const start = moment().startOf('week').format('x');
-    const end = moment().endOf('week').format('x');
-    const today = moment().format('x');
-    const dateTwo = moment(dateParam).format('x');
-    const dateDay = moment(dateParam).format('dddd');
+    if (dateParam === 'Unknown') {
+      return (
+        <span style={styles.listItemRight}>?</span>
+      );
+    } else {
+      const date = new Date();
+      const shortDate = date.toLocaleDateString();
+      const orderDate = new Date(dateParam);
+      const shortOrderDate = orderDate.toLocaleDateString();
+      const start = moment().startOf('week').format('x');
+      const end = moment().endOf('week').format('x');
+      const today = moment().format('x');
+      const dateTwo = moment(dateParam).format('x');
+      const dateDay = moment(dateParam).format('dddd');
 
 
-    if (shortOrderDate === shortDate) {
+      if (shortOrderDate === shortDate) {
+        return (
+          <span style={styles.listItemRight}>Today</span>
+        );
+      } else if (dateTwo < today) {
+        return (
+          <span style={styles.listItemTextLate}>{shortOrderDate}</span>
+        );
+      } else if (dateTwo >= start && dateTwo <= end) {
+        return (
+          <span style={styles.listItemRight}>{dateDay}</span>
+        );
+      }
       return (
-        <span style={styles.listItemRight}>Today</span>
-      );
-    } else if (dateTwo < today) {
-      return (
-        <span style={styles.listItemTextLate}>{shortOrderDate}</span>
-      );
-    } else if (dateTwo >= start && dateTwo <= end) {
-      return (
-        <span style={styles.listItemRight}>{dateDay}</span>
+        <span style={styles.listItemRight}>{shortOrderDate}</span>
       );
     }
-    return (
-      <span style={styles.listItemRight}>{shortOrderDate}</span>
-    );
   }
 
   renderOrders() {
@@ -58,7 +65,6 @@ class Incoming extends Component {
   }
 
   render() {
-    console.log('render Orders');
     return (
       <div>
         <ul className="list-group">

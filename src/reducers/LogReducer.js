@@ -12,7 +12,6 @@ export default (state = INITIAL_STATE, action) => {
     case LOADING_LOG:
       return { ...state };
     case LOG_FETCH_SUCCESS:
-      console.log(action.payload);
       return { ...state, log_list: action.payload, loading: false };
     default:
       return state;

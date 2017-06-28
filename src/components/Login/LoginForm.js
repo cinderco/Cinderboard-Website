@@ -24,8 +24,6 @@ class LoginForm extends Component {
   }
 
   componentWillMount() {
-    console.log('in login form', this.state.user);
-
     firebase.auth().onAuthStateChanged(user => {
         this.setState({ user });
         if (user) {
@@ -35,8 +33,6 @@ class LoginForm extends Component {
   }
 
   handleFormSubmit({ email, password }) {
-    console.log(email, password);
-
     this.props.loginUser({ email, password });
   }
 

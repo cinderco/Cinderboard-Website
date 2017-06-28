@@ -20,7 +20,7 @@ class OrderLog extends Component {
                 <span style={{ paddingLeft: 5, color: '#848484' }}>{logItem.logTime}</span>
               </div>
               <div>
-                <span style={{ color: 'red' }}>{logItem.createdBy} </span>
+                <span style={{ fontWeight: '600' }}>{logItem.createdBy} </span>
                 <span>{logItem.log}</span>
               </div>
             </div>

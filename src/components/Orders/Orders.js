@@ -29,7 +29,6 @@ class Orders extends Component {
       .on('value', snapshot => {
         let JSONData = snapshot.val();
 
-        console.log(JSONData[Object.keys(JSONData)[0]]);
         const date = new Date().toLocaleDateString();
 
         const changeData = () => {
@@ -47,9 +46,6 @@ class Orders extends Component {
         };
 
         JSONData = changeData();
-
-
-        console.log(JSONData);
 
         //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
         const arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
@@ -123,7 +119,6 @@ class Orders extends Component {
   }
 
   render() {
-    console.log('render Orders');
       if (this.props.loading) {
         return (
           <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '90vh' }}>
@@ -174,16 +169,31 @@ class Orders extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   const loading = state.incomingOrders.loading;
-  console.log(loading);
 
   const outgoing = _.map(state.orders.outgoing_list, (val, uid) => {
     return { ...val, uid };
   });
 
   const ordersOutgoing = outgoing.sort((a, b) => {
-    return new Date(a.date).getTime() - new Date(b.date).getTime();
+    console.log(new Date(a.date).getTime());
+
+    if (a.date === 'Unknown' && b.date !== 'Unknown') {
+      const stringToNumber = 3002085600000;
+
+      return stringToNumber - new Date(b.date).getTime();
+    } else if (a.date === 'Unknown' && b.date === 'Unknown') {
+      const stringToNumberA = 3002085600000;
+      const stringToNumberB = 3002085600000;
+
+      return stringToNumberA - stringToNumberB;
+    } else if (a.date !== 'Unknown' && b.date === 'Unknown') {
+      const stringToNumber = 3002085600000;
+
+      return new Date(a.date).getTime() - stringToNumber;
+    } else {
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    }
   });
 
   const incoming = _.map(state.incomingOrders.incoming_list, (val, uid) => {
@@ -191,10 +201,24 @@ const mapStateToProps = state => {
   });
 
   const ordersIncoming = incoming.sort((a, b) => {
-    return new Date(a.date).getTime() - new Date(b.date).getTime();
+    if (a.date === 'Unknown' && b.date !== 'Unknown') {
+      const stringToNumber = 3002085600000;
+
+      return stringToNumber - new Date(b.date).getTime();
+    } else if (a.date === 'Unknown' && b.date === 'Unknown') {
+      const stringToNumberA = 3002085600000;
+      const stringToNumberB = 3002085600000;
+
+      return stringToNumberA - stringToNumberB;
+    } else if (a.date !== 'Unknown' && b.date === 'Unknown') {
+      const stringToNumber = 3002085600000;
+
+      return new Date(a.date).getTime() - stringToNumber;
+    } else {
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    }
   });
 
-  console.log(state.orders.outgoing_list);
   return { loading, ordersOutgoing, ordersIncoming };
 };
 
