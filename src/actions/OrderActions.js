@@ -2,6 +2,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import firebase from 'firebase';
 import axios from 'axios';
+import { browserHistory, Link, history } from 'react-router';
 import {
   ORDER_UPDATE,
   OUTGOING_CREATE,
@@ -96,7 +97,6 @@ export const outgoingCreate = ({ companyName, type, newDate, other, setModalVisi
               const config = {
                 headers: {
                   "accept": "application/json",
-                  "accept-encoding": "gzip, deflate",
                   "content-type": "application/json"
                 }
               };
@@ -142,7 +142,6 @@ export const outgoingCreate = ({ companyName, type, newDate, other, setModalVisi
               const config = {
                 headers: {
                   "accept": "application/json",
-                  "accept-encoding": "gzip, deflate",
                   "content-type": "application/json"
                 }
               };
@@ -195,7 +194,6 @@ export const incomingCreate = ({ companyName, type, newDate, setModalVisible }) 
               const config = {
                 headers: {
                   "accept": "application/json",
-                  "accept-encoding": "gzip, deflate",
                   "content-type": "application/json"
                 }
               };
@@ -239,7 +237,6 @@ export const incomingCreate = ({ companyName, type, newDate, setModalVisible }) 
               const config = {
                 headers: {
                   "accept": "application/json",
-                  "accept-encoding": "gzip, deflate",
                   "content-type": "application/json"
                 }
               };
@@ -274,7 +271,10 @@ export const outgoingArchive = ({ uid }) => {
             dispatch({ type: OUTGOING_ARCHIVE });
 
             firebase.database().ref(`/data/outgoing_orders/${uid}`)
-              .remove();
+              .remove()
+              .then(() => {
+                browserHistory.push('/home');
+              });
           });
       });
   };
@@ -287,16 +287,31 @@ export const incomingArchive = ({ uid }) => {
   return (dispatch) => {
     firebase.database().ref(`/data/incoming_orders/${uid}`)
       .once('value', snapshot => {
-        const { companyName, createDate, createdBy, date, orderType, type } = snapshot.val();
+        const { companyName, createDate, createdBy, date, orderType, status, type } = snapshot.val();
 
         firebase.database().ref('/data/archived_orders')
-          .push({ companyName, createDate, createdBy, date, orderType, type, archiveDate })
+          .push({ companyName, createDate, createdBy, date, orderType, status, type, archiveDate })
           .then(() => {
             dispatch({ type: OUTGOING_ARCHIVE });
 
             firebase.database().ref(`/data/incoming_orders/${uid}`)
-              .remove();
+              .remove()
+              .then(() => {
+                browserHistory.push('/home');
+              });
           });
+      });
+  };
+};
+
+export const orderFetch = ({ uid, type }) => {
+  console.log("IN ORDER FETCH", uid);
+
+  return (dispatch) => {
+    firebase.database().ref(`/data/${type}/${uid}`)
+      .on('value', snapshot => {
+        console.log('order fetched', snapshot.val());
+        dispatch({ type: ORDER_FETCH_SUCCESS, payload: { ...snapshot.val(), uid } });
       });
   };
 };
@@ -306,15 +321,6 @@ export const outgoingFetch = () => {
     firebase.database().ref('/data/outgoing_orders')
       .on('value', snapshot => {
         dispatch({ type: OUTGOING_FETCH_SUCCESS, payload: snapshot.val() });
-      });
-  };
-};
-
-export const orderFetch = ({ uid }) => {
-  return (dispatch) => {
-    firebase.database().ref(`/data/outgoing_orders/${uid}`)
-      .on('value', snapshot => {
-        dispatch({ type: ORDER_FETCH_SUCCESS, payload: snapshot.val() });
       });
   };
 };
@@ -374,7 +380,7 @@ export const incomingFetch = () => {
   };
 };
 
-export const outgoingSave = ({ companyName, type, newDate, other, status, uid, createDate, changed, createdBy }) => {
+export const outgoingSave = ({ companyName, type, newDate, other, status, uid, createDate, changed, createdBy, savingOrder }) => {
   console.log('Test new DAte Test: ', newDate);
 
   const { currentUser } = firebase.auth();
@@ -391,9 +397,45 @@ export const outgoingSave = ({ companyName, type, newDate, other, status, uid, c
       firebase.database().ref(`/data/outgoing_orders/${uid}`)
         .update({ companyName, type, date, other, orderType: 'outgoing', status, createdBy })
         .then(() => {
-          firebase.database().ref(`/data/outgoing_orders/${uid}/log`)
-            .push({ log: changed, logDate, logTime, createdBy: name });
-          dispatch({ type: OUTGOING_SAVE_SUCCESS });
+          if (changed.length <= 1) {
+            dispatch({ type: OUTGOING_SAVE_SUCCESS });
+            savingOrder();
+          } else {
+            firebase.database().ref(`/data/outgoing_orders/${uid}/log`)
+              .push({ log: changed, logDate, logTime, createdBy: name })
+                .then(() => {
+                  dispatch({ type: OUTGOING_SAVE_SUCCESS });
+                  savingOrder();
+
+                  firebase.database().ref('/users')
+                    .once('value', snapshot => {
+                      const employees = _.map(snapshot.val(), (val, uid) => {
+                        return { ...val, uid };
+                      });
+
+                      const tokens = _.map(employees, (val) => {
+                        return val.token;
+                      });
+
+                      for (let i = 0; i < tokens.length; i++) {
+                        const config = {
+                          headers: {
+                            "accept": "application/json",
+                            "content-type": "application/json"
+                          }
+                        };
+
+                        axios.post('https://cinderboard.com/pushNotification',
+                          {
+                            "token": `${tokens[i]}`,
+                            "message": `${companyName} order has been changed.`
+                          },
+                          config
+                        );
+                      }
+                    });
+                });
+          }
         });
     };
   } else {
@@ -405,9 +447,45 @@ export const outgoingSave = ({ companyName, type, newDate, other, status, uid, c
       firebase.database().ref(`/data/outgoing_orders/${uid}`)
         .update({ companyName, type, date, other, orderType: 'outgoing', status, createdBy })
         .then(() => {
-          firebase.database().ref(`/data/outgoing_orders/${uid}/log`)
-            .push({ log: changed, logDate, logTime, createdBy: name });
-          dispatch({ type: OUTGOING_SAVE_SUCCESS });
+          if (changed.length <= 1) {
+            dispatch({ type: OUTGOING_SAVE_SUCCESS });
+            savingOrder();
+          } else {
+            firebase.database().ref(`/data/outgoing_orders/${uid}/log`)
+              .push({ log: changed, logDate, logTime, createdBy: name })
+                .then(() => {
+                  dispatch({ type: OUTGOING_SAVE_SUCCESS });
+                  savingOrder();
+
+                  firebase.database().ref('/users')
+                    .once('value', snapshot => {
+                      const employees = _.map(snapshot.val(), (val, uid) => {
+                        return { ...val, uid };
+                      });
+
+                      const tokens = _.map(employees, (val) => {
+                        return val.token;
+                      });
+
+                      for (let i = 0; i < tokens.length; i++) {
+                        const config = {
+                          headers: {
+                            "accept": "application/json",
+                            "content-type": "application/json"
+                          }
+                        };
+
+                        axios.post('https://cinderboard.com/pushNotification',
+                          {
+                            "token": `${tokens[i]}`,
+                            "message": `${companyName} order has been changed.`
+                          },
+                          config
+                        );
+                      }
+                    });
+                });
+          }
         });
     };
   }
@@ -443,7 +521,6 @@ export const setOrderStatus = ({ orderStatus, uid, company, log, orderType }) =>
                   const config = {
                     headers: {
                       "accept": "application/json",
-                      "accept-encoding": "gzip, deflate",
                       "content-type": "application/json"
                     }
                   };
@@ -488,16 +565,115 @@ export const setOrderStatus = ({ orderStatus, uid, company, log, orderType }) =>
   };
 };
 
-export const incomingSave = ({ companyName, type, newDate, uid, createDate, createdBy }) => {
-  const date = newDate.toString();
+export const incomingSave = ({ companyName, type, newDate, status, uid, createDate, changed, createdBy, savingOrder }) => {
+  console.log('Test new DAte Test: ', newDate);
 
-  return (dispatch) => {
-    firebase.database().ref(`/data/incoming_orders/${uid}`)
-      .update({ companyName, type, date, createDate, createdBy, orderType: 'incoming' })
-      .then(() => {
+  const { currentUser } = firebase.auth();
+  const logTime = moment().format('LT');
+  const logDate = moment().format('LL');
+  const name = currentUser.displayName;
 
-      });
-  };
+  if (newDate === 'Unknown') {
+    const date = newDate;
+
+    return (dispatch) => {
+      dispatch({ type: INITIATE_SAVE });
+
+      firebase.database().ref(`/data/incoming_orders/${uid}`)
+        .update({ companyName, type, date, orderType: 'incoming', status, createdBy })
+        .then(() => {
+          if (changed.length <= 1) {
+            dispatch({ type: OUTGOING_SAVE_SUCCESS });
+            savingOrder();
+          } else {
+            firebase.database().ref(`/data/incoming_orders/${uid}/log`)
+              .push({ log: changed, logDate, logTime, createdBy: name })
+                .then(() => {
+                  dispatch({ type: OUTGOING_SAVE_SUCCESS });
+                  savingOrder();
+
+                  firebase.database().ref('/users')
+                    .once('value', snapshot => {
+                      const employees = _.map(snapshot.val(), (val, uid) => {
+                        return { ...val, uid };
+                      });
+
+                      const tokens = _.map(employees, (val) => {
+                        return val.token;
+                      });
+
+                      for (let i = 0; i < tokens.length; i++) {
+                        const config = {
+                          headers: {
+                            "accept": "application/json",
+                            "content-type": "application/json"
+                          }
+                        };
+
+                        axios.post('https://cinderboard.com/pushNotification',
+                          {
+                            "token": `${tokens[i]}`,
+                            "message": `${companyName} order has been changed.`
+                          },
+                          config
+                        );
+                      }
+                    });
+                });
+          }
+        });
+    };
+  } else {
+    const date = moment(newDate).format('l');
+
+    return (dispatch) => {
+      dispatch({ type: INITIATE_SAVE });
+
+      firebase.database().ref(`/data/incoming_orders/${uid}`)
+        .update({ companyName, type, date, orderType: 'incoming', status, createdBy })
+        .then(() => {
+          if (changed.length <= 1) {
+            dispatch({ type: OUTGOING_SAVE_SUCCESS });
+            savingOrder();
+          } else {
+            firebase.database().ref(`/data/incoming_orders/${uid}/log`)
+              .push({ log: changed, logDate, logTime, createdBy: name })
+                .then(() => {
+                  dispatch({ type: OUTGOING_SAVE_SUCCESS });
+                  savingOrder();
+
+                  firebase.database().ref('/users')
+                    .once('value', snapshot => {
+                      const employees = _.map(snapshot.val(), (val, uid) => {
+                        return { ...val, uid };
+                      });
+
+                      const tokens = _.map(employees, (val) => {
+                        return val.token;
+                      });
+
+                      for (let i = 0; i < tokens.length; i++) {
+                        const config = {
+                          headers: {
+                            "accept": "application/json",
+                            "content-type": "application/json"
+                          }
+                        };
+
+                        axios.post('https://cinderboard.com/pushNotification',
+                          {
+                            "token": `${tokens[i]}`,
+                            "message": `${companyName} order has been changed.`
+                          },
+                          config
+                        );
+                      }
+                    });
+                });
+          }
+        });
+    };
+  }
 };
 
 export const outgoingDelete = ({ uid, closeModal }) => {
@@ -506,11 +682,14 @@ export const outgoingDelete = ({ uid, closeModal }) => {
       firebase.database().ref(`/data/outgoing_orders/${uid}`)
         .remove()
         .then(() => {
-          closeModal();
+          browserHistory.push('/home');
         });
     } else {
       firebase.database().ref(`/data/outgoing_orders/${uid}`)
-        .remove();
+        .remove()
+        .then(() => {
+          browserHistory.push('/home');
+        });
     }
   };
 };
@@ -520,12 +699,15 @@ export const incomingDelete = ({ uid, closeModal }) => {
     if (closeModal) {
       firebase.database().ref(`/data/incoming_orders/${uid}`)
         .remove()
-        // .then(() => {
-        //   closeModal();
-        // });
+        .then(() => {
+          browserHistory.push('/home');
+        });
     } else {
       firebase.database().ref(`/data/incoming_orders/${uid}`)
-        .remove();
+        .remove()
+        .then(() => {
+          browserHistory.push('/home');
+        });
     }
   };
 };
@@ -544,3 +726,4 @@ export const restoreOrder = ({ type, uid, setModalVisible }) => {
       });
   };
 }
+

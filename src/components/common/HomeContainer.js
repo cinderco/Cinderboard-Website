@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import NavBar from './NavBar';
 import { signOutUser } from '../../actions';
+import { browserHistory, Link, history } from 'react-router';
 
 class HomeContainer extends Component {
   state = {
@@ -11,7 +12,15 @@ class HomeContainer extends Component {
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
+	if(user) {
+
         this.setState({ user: user.displayName });
+    	
+	} else {
+
+	browserHistory.push("/");
+        
+	}
     });
   }
 
@@ -24,9 +33,7 @@ class HomeContainer extends Component {
       <div>
         <NavBar logOut={this.onButtonClick.bind(this)} name={this.state.user} />
         <div className="mainContainer">
-          <div className="container">
             {this.props.children}
-          </div>
         </div>
      </div>
     );

@@ -14,7 +14,9 @@ const INITIAL_STATE = {
   companyName: '',
   type: '',
   newDate: '',
-  orderCreateError: ''
+  orderCreateError: '',
+  saving: true,
+  isOpen: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -28,7 +30,7 @@ export default (state = INITIAL_STATE, action) => {
     case OUTGOING_ARCHIVE:
       return INITIAL_STATE;
     case OUTGOING_SAVE_SUCCESS:
-      return INITIAL_STATE;
+      return { ...INITIAL_STATE };
     case INCOMING_CREATE:
       return INITIAL_STATE;
     case INCOMING_SAVE_SUCCESS:
@@ -41,3 +43,4 @@ export default (state = INITIAL_STATE, action) => {
     return state;
   }
 };
+

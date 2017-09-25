@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { incomingFetch, orderDelete } from '../../actions';
 import DisplayOrder from './DisplayOrder';
+import { browserHistory, Link } from 'react-router';
 
 
 class Incoming extends Component {
@@ -45,8 +46,28 @@ class Incoming extends Component {
 
   renderOrders() {
     return this.props.ordersIncoming.map((order, index) => {
+      if (order.status === 'Received') {
+        return (
+          <div key={index}>
+            <Link to={{ pathname: '/order', query: { id: order.uid, orderType: 'incoming_orders' } }}>
+            <li
+              className="list-group-item"
+              style={styles.listItemReceivedStyle}
+              key={index}
+              data-toggle="modal"
+              data-target={`#modal${index}incoming`}
+            >
+                <span style={styles.listItemLeft}>{order.companyName}</span>
+                <span style={styles.listItemCenter}>{order.type}</span>
+                {this.renderDate(order.date)}
+            </li>
+            </Link>
+          </div>
+        );
+      }
       return (
         <div key={index}>
+          <Link to={{ pathname: '/order', query: { id: order.uid, orderType: 'incoming_orders' } }}>
           <li
             className="list-group-item"
             style={styles.listItemStyle}
@@ -58,7 +79,7 @@ class Incoming extends Component {
               <span style={styles.listItemCenter}>{order.type}</span>
               {this.renderDate(order.date)}
           </li>
-          <DisplayOrder order={order} modalName={`modal${index}incoming`} orderType={'incoming'} />
+          </Link>
         </div>
       );
     });
@@ -66,7 +87,7 @@ class Incoming extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ marginBottom: 50 }}>
         <ul className="list-group">
           {this.renderOrders()}
         </ul>
@@ -81,6 +102,13 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-between',
     cursor: 'pointer'
+  },
+  listItemReceivedStyle: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    cursor: 'pointer',
+    backgroundColor: '#0288D1'
   },
   listItemCenter: {
     fontSize: 20,
@@ -128,3 +156,4 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   incomingFetch, orderDelete,
 })(Incoming);
+

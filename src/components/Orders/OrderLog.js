@@ -33,10 +33,10 @@ class OrderLog extends Component {
   render() {
     return (
       <container>
-        <div style={{ textAlign: 'center' }}>
-          <h4>Order Log</h4>
-        </div>
-        <div className="orderLogBox">
+        <div className="orderLogBox" style={{ height: this.props.height }}>
+          <div className="orderLogTitle">
+            <h4>Order Log</h4>
+          </div>
           <ul style={{ listStyle: 'none', padding: 0 }}>
             {this.renderOrderLogItem()}
           </ul>
@@ -48,3 +48,4 @@ class OrderLog extends Component {
 }
 
 export default OrderLog;
+

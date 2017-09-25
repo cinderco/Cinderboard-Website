@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import axios from 'axios';
+import { browserHistory, Link, history } from 'react-router';
 import {
   OUTGOING_CREATE,
   EMAIL_CHANGED,
@@ -132,7 +133,7 @@ export const signOutUser = () => {
   return () => {
     firebase.auth().signOut()
       .then(() => {
-
+      	browserHistory.push("/");
       })
       .catch((error) => {
         console.log(error);

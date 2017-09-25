@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const admin = require('./firebase-admin');
 const express = require('express');
 const path = require('path');
@@ -16,8 +14,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'index.html'));
 });
 
-const port = process.env.APP_PORT || 8080;
-const host = process.env.APP_HOST || '127.0.0.1';
+const port = 5000;
+const host = 'localhost' || '127.0.0.1';
 
 const router = require('./routes');
 

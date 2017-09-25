@@ -1,9 +1,43 @@
-html, body {
-  height: 100%
+body {
+  height: 100%,auto;
+}
+
+a {
+    text-decoration: none !important;
+    color: 'black'
+}
+
+/* unvisited link */
+a:link {
+    color: black;
+}
+
+/* visited link */
+a:visited {
+    color: black;
+}
+
+/* mouse over link */
+a:hover {
+    color: grey !important;
+}
+
+/* selected link */
+a:active {
+    color: grey;
+}
+
+@media screen and (min-width: 480px) {
+    body {
+        background-color: lightgreen;
+    }
 }
 
 .iconStyle {
-  color: '#333333'
+  color: blue;
+  font-size: 10px !important;
+  height: 50px;
+  width: 50px;
 }
 
 .border {
@@ -18,27 +52,20 @@ html, body {
   transform: translate(-50%, -50%);
 }
 
-.orderLogBox {
-  width: 100%;
-  height: 250px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  padding: 10px;
-  overflow: scroll;
-  overflow-x: hidden;
-}
-
 .orderItem {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 135px;
-  width: 135px;
+  height: 100%;
+  width: 185px;
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 15px;
+  padding-left: 5px;
+  padding-right: 5px;
   position: relative;
+  background-color: #fff;
 }
 
 .orderItemOrder {
@@ -48,13 +75,50 @@ html, body {
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 15px;
-  margin-bottom: 15px;
+  background-color: #fff;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.orderLogBox {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  overflow: scroll;
+  overflow-x: hidden;
+  background-color: #fff;
+  margin-bottom: 10px;
+}
+
+.orderLogTitle {
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+style={{ textAlign: 'center' }}
+
+.topHalf {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  padding-bottom: 10px;
 }
 
 .orderItemsContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  height: 150px;
+}
+
+.orderButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  height: 50px;
 }
 
 .orderText {
@@ -63,22 +127,30 @@ html, body {
   margin: 0;
 }
 
+.orderTextArea {
+  width: 80%;
+  margin: 0;
+  padding-left: 20px;
+  padding: 0;
+  font-size: 20px;
+}
+
 .statusComplete {
-  font-size: 16px;
+  font-size: 20px;
   padding: 0;
   margin: 0;
   color: white;
 }
 
 .statusReady {
-  font-size: 16px;
+  font-size: 20px;
   padding: 0;
   margin: 0;
   color: black;
 }
 
 .statusProcessing {
-  font-size: 16px;
+  font-size: 20px;
   padding: 0;
   margin: 0;
   color: black;
@@ -89,8 +161,8 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 135px;
-  width: 135px;
+  height: 100%;
+  width: 185px;
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 15px;
@@ -103,8 +175,8 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 135px;
-  width: 135px;
+  height: 100%;
+  width: 185px;
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 15px;
@@ -117,8 +189,8 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 135px;
-  width: 135px;
+  height: 100%;
+  width: 185px;
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 15px;
@@ -127,23 +199,140 @@ html, body {
 }
 
 .orderTextLabel {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
   padding: 0;
   margin: 0;
-  padding-right: 10px;
+  margin-right: 20px;
+}
+
+.initials {
+  height: 80%;
+  width: 80%;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.orderInput {
+  height: 100%;
+  width: 100%;
+  border: none;
+  resize: none;
 }
 
 .container {
-  background-color: white;
-  padding-bottom: 50px;
+  background-color: pink;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .mainContainer {
-  height: 100%;
+  /*height: calc(100vh - 50px);*/
   width: 100vw;
-  background-color: #E9EBEE;
   padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.orderContainer {
+  width: 98%;
+  height: 90%;
+  align-self: center;
+  border-radius: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.ordersContainer {
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 1200px;
+}
+
+.outsideOrderContainer {
+  width: 770px;
+  align-self: center;
+  height: calc(100vh - 50px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000000;
+}
+
+.backButton {
+  position: absolute;
+  left: 100px;
+  top: 5%;
+  border-radius: 50%;
+  height: 70px;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 1200px) {
+  .backButton {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 770px) {
+    .outsideOrderContainer {
+      width: 100%;
+      background-color: #fff;
+    }
+
+    .container {
+      width: 100%;
+    }
+
+    .orderContainer {
+      height: 100%;
+      width: 100%;
+    }
+
+    .orderItemsContainer {
+      height: calc(100vw / 4);
+    }
+
+    .orderItem {
+      width: calc(100% / 4)
+    }
+
+    .itemComplete {
+      width: calc(100% / 4)
+    }
+
+    .itemReady {
+      width: calc(100% / 4)
+    }
+
+    .itemProcessing {
+      width: calc(100% / 4)
+    }
+
+    .backButton {
+      display: none;
+    }
+
+    .ordersContainer {
+      padding-left: 15px;
+      padding-right: 30px;
+    }
+}
+
+.titleButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 20%;
 }
 
 td, th {
@@ -165,6 +354,10 @@ td:first-of-type, td:first-of-type > div {
 }
 
 #datetimepicker1 {
+  z-index: 999999 !important;
+}
+
+#datetimepicker2 {
   z-index: 999999 !important;
 }
 
@@ -226,12 +419,13 @@ td:first-of-type, td:first-of-type > div {
 
 .react-datepicker {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 0.8rem;
+  font-size: 16px;
   background-color: #fff;
   color: #000;
   border: 1px solid #aeaeae;
   border-radius: 0.3rem;
   display: inline-block;
+  width: 200px;
   position: relative; }
 
 .react-datepicker__triangle {
@@ -301,6 +495,7 @@ td:first-of-type, td:first-of-type > div {
 
 .react-datepicker__month-container {
   display: inline;
+  width: 100%;
   float: left; }
 
 .react-datepicker__month {
@@ -1045,3 +1240,4 @@ td:first-of-type, td:first-of-type > div {
         color: #FFF;
         background-color: #4A90E2;
       }
+

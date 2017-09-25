@@ -13,6 +13,10 @@ import NewIncomingOrder from './NewIncomingOrder';
 class Orders extends Component {
   state = {
     showModal: false,
+    sortByOutgoing: 'Date',
+    sortByIncoming: 'Date',
+    ordersOutgoing: [],
+    ordersIncoming: []
   }
 
   componentWillMount() {
@@ -20,8 +24,130 @@ class Orders extends Component {
     this.props.incomingFetch();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.state.sortByOutgoing === 'Date') {
+      const ordersOutgoing = nextProps.outgoing.sort((a, b) => {
+        if (a.date === 'Unknown' && b.date !== 'Unknown') {
+          const stringToNumber = 3002085600000;
+
+          return stringToNumber - new Date(b.date).getTime();
+        } else if (a.date === 'Unknown' && b.date === 'Unknown') {
+          const stringToNumberA = 3002085600000;
+          const stringToNumberB = 3002085600000;
+
+          return stringToNumberA - stringToNumberB;
+        } else if (a.date !== 'Unknown' && b.date === 'Unknown') {
+          const stringToNumber = 3002085600000;
+
+          return new Date(a.date).getTime() - stringToNumber;
+        } else {
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        }
+      });
+
+      this.setState({ ordersOutgoing });
+    } else if (this.state.sortByOutgoing === 'Name') {
+      const ordersOutgoing = _.sortBy(nextProps.outgoing, [(o) => {
+        return o.companyName;
+      }]);
+
+      this.setState({ ordersOutgoing });
+    }
+
+    if (this.state.sortByIncoming === 'Date') {
+      const ordersIncoming = nextProps.incoming.sort((a, b) => {
+        if (a.date === 'Unknown' && b.date !== 'Unknown') {
+          const stringToNumber = 3002085600000;
+
+          return stringToNumber - new Date(b.date).getTime();
+        } else if (a.date === 'Unknown' && b.date === 'Unknown') {
+          const stringToNumberA = 3002085600000;
+          const stringToNumberB = 3002085600000;
+
+          return stringToNumberA - stringToNumberB;
+        } else if (a.date !== 'Unknown' && b.date === 'Unknown') {
+          const stringToNumber = 3002085600000;
+
+          return new Date(a.date).getTime() - stringToNumber;
+        } else {
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        }
+      });
+
+      this.setState({ ordersIncoming });
+    } else if (this.state.sortByIncoming === 'Name') {
+      const ordersIncoming = _.sortBy(nextProps.incoming, [(o) => {
+        return o.companyName;
+      }]);
+
+      this.setState({ ordersIncoming });
+    }
+  }
+
   close() {
     this.setState({ showModal: false });
+  }
+
+  setSortByOutgoing() {
+    if (document.getElementById('setOrderByOutgoing').value === 'Date') {
+      const ordersOutgoing = this.props.outgoing.sort((a, b) => {
+        if (a.date === 'Unknown' && b.date !== 'Unknown') {
+          const stringToNumber = 3002085600000;
+
+          return stringToNumber - new Date(b.date).getTime();
+        } else if (a.date === 'Unknown' && b.date === 'Unknown') {
+          const stringToNumberA = 3002085600000;
+          const stringToNumberB = 3002085600000;
+
+          return stringToNumberA - stringToNumberB;
+        } else if (a.date !== 'Unknown' && b.date === 'Unknown') {
+          const stringToNumber = 3002085600000;
+
+          return new Date(a.date).getTime() - stringToNumber;
+        } else {
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        }
+      });
+
+      this.setState({ ordersOutgoing });
+    } else if (document.getElementById('setOrderByOutgoing').value === 'Name') {
+      const ordersOutgoing = _.sortBy(this.props.outgoing, [(o) => {
+        return o.companyName;
+      }]);
+
+      this.setState({ ordersOutgoing });
+    }
+  }
+
+  setSortByIncoming() {
+    if (document.getElementById('setOrderByIncoming').value === 'Date') {
+      const ordersIncoming = this.props.incoming.sort((a, b) => {
+        if (a.date === 'Unknown' && b.date !== 'Unknown') {
+          const stringToNumber = 3002085600000;
+
+          return stringToNumber - new Date(b.date).getTime();
+        } else if (a.date === 'Unknown' && b.date === 'Unknown') {
+          const stringToNumberA = 3002085600000;
+          const stringToNumberB = 3002085600000;
+
+          return stringToNumberA - stringToNumberB;
+        } else if (a.date !== 'Unknown' && b.date === 'Unknown') {
+          const stringToNumber = 3002085600000;
+
+          return new Date(a.date).getTime() - stringToNumber;
+        } else {
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        }
+      });
+
+      this.setState({ ordersIncoming });
+    } else if (document.getElementById('setOrderByIncoming').value === 'Name') {
+      const ordersIncoming = _.sortBy(this.props.incoming, [(o) => {
+        return o.companyName;
+      }]);
+
+      this.setState({ ordersIncoming });
+    }
   }
 
   getFirebaseJson(ReportTitle, ShowLabel, type) {
@@ -128,7 +254,7 @@ class Orders extends Component {
         );
       }
       return (
-        <div style={{ paddingLeft: '15px', paddingRight: '15px' }}>
+        <div className="ordersContainer">
             <div
               className="page-header"
               style={{
@@ -139,13 +265,22 @@ class Orders extends Component {
             >
               <h2>Outgoing Orders</h2>
               <div style={{ display: 'flex', alignItems: 'center', position: 'absolute', right: '0px', bottom: '15px' }}>
+                <p style={{ marginRight: 10, padding: 0, marginTop: 0, marginBottom: 0, marginLeft: 0 }}>Sort By</p>
+                <select
+                  id="setOrderByOutgoing"
+                  onChange={() => this.setSortByOutgoing()}
+                  style={{ marginRight: 15 }}
+                >
+                  <option value="Date">Date</option>
+                  <option value="Name">Company Name</option>
+                </select>
                 <NewOrder type={'outgoing'} />
                 <button className='btn btn-danger' onClick={() => this.getFirebaseJson('Orders', true, 'outgoing')}>
                   <span><i className="fa fa-download" aria-hidden="true"></i> Excel Export</span>
                 </button>
               </div>
             </div>
-          <Outgoing ordersOutgoing={this.props.ordersOutgoing} />
+          <Outgoing ordersOutgoing={this.state.ordersOutgoing} />
             <div
               className="page-header"
               style={{
@@ -156,13 +291,22 @@ class Orders extends Component {
             >
               <h2>Incoming Orders</h2>
               <div style={{ display: 'flex', alignItems: 'center', position: 'absolute', right: '0px', bottom: '15px' }}>
+                <p style={{ marginRight: 10, padding: 0, marginTop: 0, marginBottom: 0, marginLeft: 0 }}>Sort By</p>
+                <select
+                  id="setOrderByIncoming"
+                  onChange={() => this.setSortByIncoming()}
+                  style={{ marginRight: 15 }}
+                >
+                  <option value="Date">Date</option>
+                  <option value="Name">Company Name</option>
+                </select>
                 <NewIncomingOrder />
                 <button className='btn btn-danger' onClick={() => this.getFirebaseJson('Orders', true, 'incoming')}>
                   <span><i className="fa fa-download" aria-hidden="true"></i> Excel Export</span>
                 </button>
               </div>
             </div>
-          <Incoming ordersIncoming={this.props.ordersIncoming} />
+          <Incoming ordersIncoming={this.state.ordersIncoming} />
         </div>
       );
     }
@@ -175,53 +319,14 @@ const mapStateToProps = state => {
     return { ...val, uid };
   });
 
-  const ordersOutgoing = outgoing.sort((a, b) => {
-    console.log(new Date(a.date).getTime());
-
-    if (a.date === 'Unknown' && b.date !== 'Unknown') {
-      const stringToNumber = 3002085600000;
-
-      return stringToNumber - new Date(b.date).getTime();
-    } else if (a.date === 'Unknown' && b.date === 'Unknown') {
-      const stringToNumberA = 3002085600000;
-      const stringToNumberB = 3002085600000;
-
-      return stringToNumberA - stringToNumberB;
-    } else if (a.date !== 'Unknown' && b.date === 'Unknown') {
-      const stringToNumber = 3002085600000;
-
-      return new Date(a.date).getTime() - stringToNumber;
-    } else {
-      return new Date(a.date).getTime() - new Date(b.date).getTime();
-    }
-  });
-
   const incoming = _.map(state.incomingOrders.incoming_list, (val, uid) => {
     return { ...val, uid };
   });
 
-  const ordersIncoming = incoming.sort((a, b) => {
-    if (a.date === 'Unknown' && b.date !== 'Unknown') {
-      const stringToNumber = 3002085600000;
-
-      return stringToNumber - new Date(b.date).getTime();
-    } else if (a.date === 'Unknown' && b.date === 'Unknown') {
-      const stringToNumberA = 3002085600000;
-      const stringToNumberB = 3002085600000;
-
-      return stringToNumberA - stringToNumberB;
-    } else if (a.date !== 'Unknown' && b.date === 'Unknown') {
-      const stringToNumber = 3002085600000;
-
-      return new Date(a.date).getTime() - stringToNumber;
-    } else {
-      return new Date(a.date).getTime() - new Date(b.date).getTime();
-    }
-  });
-
-  return { loading, ordersOutgoing, ordersIncoming };
+  return { loading, outgoing, incoming };
 };
 
 export default connect(mapStateToProps, {
   signOutUser, outgoingFetch, incomingFetch
 })(Orders);
+

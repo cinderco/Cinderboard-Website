@@ -11,11 +11,12 @@ import routes from './routes';
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
 const config = {
-  apiKey: 'AIzaSyABvY294twYrhWIsCuvAjjff-FkOgimug0',
-  authDomain: 'manager-e7618.firebaseapp.com',
-  databaseURL: 'https://manager-e7618.firebaseio.com',
-  storageBucket: 'manager-e7618.appspot.com',
-  messagingSenderId: '1048419770397'
+    apiKey: "AIzaSyCIlLAH8ggLIQ0_nYgwymbQ8sBWVU3_gW0",
+      authDomain: "cinderboard-8b6b6.firebaseapp.com",
+      databaseURL: "https://cinderboard-8b6b6.firebaseio.com",
+      projectId: "cinderboard-8b6b6",
+      storageBucket: "cinderboard-8b6b6.appspot.com",
+      messagingSenderId: "807753427618"
 };
 
 firebase.initializeApp(config);

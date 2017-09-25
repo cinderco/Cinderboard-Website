@@ -1,10 +1,10 @@
 const admin = require('firebase-admin');
 
-const serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT_KEY_PATH);
+const serviceAccount = require("./service-account-key.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: process.env.FIREBASE_DATABASE_URL
+  databaseURL: "https://cinderboard-8b6b6.firebaseio.com"
 });
 
 console.log('Firebase Admin Initialized');

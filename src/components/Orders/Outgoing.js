@@ -6,6 +6,7 @@ import Walk from 'react-mdi/icons/walk';
 import TruckFast from 'react-mdi/icons/truck-delivery';
 import { outgoingFetch, orderDelete } from '../../actions';
 import DisplayOrder from './DisplayOrder';
+import { browserHistory, Link } from 'react-router';
 
 class Outgoing extends Component {
 
@@ -70,6 +71,7 @@ class Outgoing extends Component {
       if (order.status === 'complete') {
         return (
           <div key={index}>
+            <Link to={{ pathname: '/order', query: { id: order.uid, orderType: 'outgoing_orders' } }}>
             <li
               className="list-group-item"
               style={styles.listItemStyleComplete}
@@ -82,12 +84,13 @@ class Outgoing extends Component {
                 <span style={styles.listItemCenter}>{order.type}</span>
                 {this.renderDate(order.date)}
             </li>
-            <DisplayOrder order={order} modalName={`modal${index}`} orderType={'outgoing'} />
+            </Link>
           </div>
         );
       } else if (order.status === 'ready') {
         return (
           <div key={index}>
+            <Link to={{ pathname: '/order', query: { id: order.uid, orderType: 'outgoing_orders' } }}>
             <li
               className="list-group-item"
               style={styles.listItemStyleReady}
@@ -100,12 +103,13 @@ class Outgoing extends Component {
                 <span style={styles.listItemCenter}>{order.type}</span>
                 {this.renderDate(order.date)}
             </li>
-            <DisplayOrder order={order} modalName={`modal${index}`} orderType={'outgoing'}/>
+            </Link>
           </div>
         );
       } else if (order.status === 'processing') {
         return (
           <div key={index}>
+            <Link to={{ pathname: '/order', query: { id: order.uid, orderType: 'outgoing_orders' } }}>
             <li
               className="list-group-item"
               style={styles.listItemStyleProcessing}
@@ -118,12 +122,13 @@ class Outgoing extends Component {
                 <span style={styles.listItemCenter}>{order.type}</span>
                 {this.renderDate(order.date)}
             </li>
-            <DisplayOrder order={order} modalName={`modal${index}`} orderType={'outgoing'}/>
+            </Link>
           </div>
         );
       }
       return (
         <div key={index}>
+          <Link to={{ pathname: '/order', query: { id: order.uid, orderType: 'outgoing_orders' } }}>
           <li
             className="list-group-item"
             style={styles.listItemStyle}
@@ -136,7 +141,7 @@ class Outgoing extends Component {
               <span style={styles.listItemCenter}>{order.type}</span>
               {this.renderDate(order.date)}
           </li>
-          <DisplayOrder order={order} modalName={`modal${index}`} orderType={'outgoing'}/>
+          </Link>
         </div>
       );
     });
@@ -225,3 +230,4 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   outgoingFetch, orderDelete
 })(Outgoing);
+
