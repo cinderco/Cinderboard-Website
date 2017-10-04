@@ -93,5 +93,17 @@ router.post('/pushNotification', (req, res) => {
     });
 });
 
+router.post('/deleteUser', (req, res) => {
+    admin.auth().deleteUser(req.body.uid)
+  	.then(() => {
+    	  console.log("Successfully deleted user");
+	  res.json({
+		message: 'hello'
+	  });
+        })
+        .catch((error) => {
+    	  console.log("Error deleting user:", error);
+        });
+});
 
 module.exports = router;
