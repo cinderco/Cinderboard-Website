@@ -13,7 +13,7 @@ const NavBar = (props) => {
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
           </button>
-          <Link to="home"><img src="https://s3-us-west-1.amazonaws.com/cinderco/cinder_icon_vector.png" className="navbar-brand" style={{ height: 50, padding: 10, marginLeft: 40 }} /></Link>
+          <Link to="home"><img src="https://firebasestorage.googleapis.com/v0/b/cinderboard-8b6b6.appspot.com/o/cinder_logo.jpg?alt=media&token=41e43d38-4c96-473b-a5fd-79c958eae1f7" className="navbar-brand" style={{ height: 50, padding: 10, marginLeft: 40 }} /></Link>
         </div>
 
         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
