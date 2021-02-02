@@ -5,7 +5,7 @@ import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, checkIfLoggedIn } from '../../actions';
 
-const uri = 'https://s3-us-west-1.amazonaws.com/cinderco/cinder_logo.jpg';
+const uri = 'https://firebasestorage.googleapis.com/v0/b/cinderboard-8b6b6.appspot.com/o/cinder_logo.jpg?alt=media&token=41e43d38-4c96-473b-a5fd-79c958eae1f7';
 
 const validate = values => {
   const errors = {};
