@@ -22,14 +22,7 @@ module.exports = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
       },
-      {
-        test: /\.(jpe?g|png|gif)$/,
-        loader: 'url-loader',
-        options: {
-          // Images larger than 10 KB won’t be inlined
-          limit: 10 * 1024
-        }
-      }
+      { test: /\.(jpg|png|gif|svg)$/i, loader: 'file-loader?name=/images/[name].[ext]'}
     ]
   },
   resolve: {
