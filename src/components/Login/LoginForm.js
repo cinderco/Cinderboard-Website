@@ -5,7 +5,7 @@ import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, checkIfLoggedIn } from '../../actions';
 
-// import CinderLogo from '../../images/cinder_logo.jpg';
+const uri = 'https://s3-us-west-1.amazonaws.com/cinderco/cinder_logo.jpg';
 
 const validate = values => {
   const errors = {};
@@ -64,7 +64,7 @@ class LoginForm extends Component {
     return (
       <div style={styles.container}>
         <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))} style={styles.formStyle}>
-      {/*<img src={CinderLogo} style={{ width: '100%', paddingBottom: '50px' }} />*/}
+        <img src={uri} style={{ width: '100%', paddingBottom: '50px' }} />
           <Field
             name="email"
             type="text"
