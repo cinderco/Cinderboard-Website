@@ -5,7 +5,7 @@ import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, checkIfLoggedIn } from '../../actions';
 
-import CinderLogo from '../../cinder_logo.jpg';
+import CinderLogo from '../../images/cinder_logo.jpg';
 
 const validate = values => {
   const errors = {};
