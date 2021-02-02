@@ -87,7 +87,8 @@ class LoginForm extends Component {
 
 const styles = {
   formStyle: {
-    width: '50%',
+    maxWidth: 450,
+    width: 450,
     backgroundColor: '#0C130C',
     padding: 50,
     borderRadius: 5
