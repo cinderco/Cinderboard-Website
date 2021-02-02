@@ -23,15 +23,13 @@ module.exports = {
         use: ['style-loader', 'css-loader']
       },
       {
-            test: /\.(png|jp(e*)g|svg)$/,  
-            use: [{
-                loader: 'url-loader',
-                options: { 
-                    limit: 8000, // Convert images < 8kb to base64 strings
-                    name: 'images/[hash]-[name].[ext]'
-                } 
-            }]
+        test: /\.(jpe?g|png|gif)$/,
+        loader: 'url-loader',
+        options: {
+          // Images larger than 10 KB won’t be inlined
+          limit: 10 * 1024
         }
+      }
     ]
   },
   resolve: {
