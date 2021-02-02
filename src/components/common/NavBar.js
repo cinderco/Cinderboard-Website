@@ -2,7 +2,7 @@ import firebase from 'firebase';
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
 
-import CinderLogo from '../../cinder_logo.jpg';
+import CinderLogo from '../../images/cinder_logo.jpg';
 
 const NavBar = (props) => {
   return (
