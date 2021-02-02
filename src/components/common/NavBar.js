@@ -2,8 +2,6 @@ import firebase from 'firebase';
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
 
-// import CinderLogo from '../../images/cinder_logo.jpg';
-
 const NavBar = (props) => {
   return (
     <nav className="navbar navbar-default" style={{ boxShadow: 'none', border: 0, marginBottom: 0 }}>
