@@ -2,7 +2,7 @@ import firebase from 'firebase';
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
 
-import CinderLogo from '../../images/cinder_logo.jpg';
+// import CinderLogo from '../../images/cinder_logo.jpg';
 
 const NavBar = (props) => {
   return (
@@ -15,7 +15,7 @@ const NavBar = (props) => {
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
           </button>
-          <Link to="home"><img src={CinderLogo} className="navbar-brand" style={{ height: 50, padding: 10, marginLeft: 40 }} /></Link>
+          <Link to="home"><img src="https://s3-us-west-1.amazonaws.com/cinderco/cinder_icon_vector.png" className="navbar-brand" style={{ height: 50, padding: 10, marginLeft: 40 }} /></Link>
         </div>
 
         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
